@@ -18,9 +18,7 @@ class Nota{
         self.titulo = titulo
         self.conteudo = conteudo
         
-        if(titulo.isEmpty || !conteudo.isEmpty){
-            self.titulo = conteudo
-        }
+        //colocar quebra de texto para telas pequenas (ver: FoodTracker)
         
         if(titulo.isEmpty && conteudo.isEmpty){
             return nil
