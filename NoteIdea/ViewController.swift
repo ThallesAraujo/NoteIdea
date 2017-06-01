@@ -14,11 +14,53 @@ class ViewController: UIViewController, UITextFieldDelegate , UITextViewDelegate
     
     @IBOutlet weak var tvConteudo: UITextView!
     
+    @IBOutlet weak var btSalvar: UIBarButtonItem!
+    
+    @IBAction func cancel(sender: UIBarButtonItem) {
+        
+        let isAdicionando = presentingViewController is UINavigationController
+        
+        if(isAdicionando){
+            dismissViewControllerAnimated (true, completion: nil)
+            //sair sem alterar nada
+        }else if let onwing = navigationController{
+            onwing.popViewControllerAnimated(true)
+        }else{
+            fatalError("A ViewController não está dentro de um NavigationController")
+        }
+
+    }
+    
+    
+    
+    var nota = Nota?()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         tfTitulo.delegate = self
         tvConteudo.delegate = self
+        
+        if let nota = nota{
+            tfTitulo.text = nota.titulo
+            tvConteudo.text = nota.conteudo
+        }
+        
+    }
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        super.prepareForSegue(segue, sender: sender)
+        
+        guard let button = sender as? UIBarButtonItem where button === btSalvar else{
+            return
+        }
+        
+        let titulo = tfTitulo.text ?? ""
+        let conteudo = tvConteudo.text ?? ""
+        
+        nota = Nota.init(titulo: titulo, conteudo: conteudo)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,5 +81,7 @@ class ViewController: UIViewController, UITextFieldDelegate , UITextViewDelegate
     func textViewDidEndEditing(textView: UITextView) {
         tvConteudo.text = textView.text
     }
+    
+    
 }
 

@@ -14,4 +14,6 @@ class NotaTableViewCell: UITableViewCell {
     
     @IBOutlet weak var lbConteudo: UILabel!
     
+    
+    
 }

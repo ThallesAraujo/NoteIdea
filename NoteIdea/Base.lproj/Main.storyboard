@@ -26,7 +26,7 @@
                                             <rect key="frame" x="8" y="65" width="584" height="149"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Título" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhi-Ic-Xav">
@@ -49,6 +49,7 @@
                                 <connections>
                                     <outlet property="lbConteudo" destination="Q1r-bb-kpV" id="RuH-Bd-LU5"/>
                                     <outlet property="lbTitulo" destination="rhi-Ic-Xav" id="JZy-Ws-Tdz"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="EditarNota" id="Ttq-9e-88U"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -60,7 +61,7 @@
                     <navigationItem key="navigationItem" title="Notas" id="7Oh-1l-ozW">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="v0x-FD-wck">
                             <connections>
-                                <segue destination="z2E-NC-D7t" kind="show" id="TxI-w4-Y5G"/>
+                                <segue destination="z2E-NC-D7t" kind="show" identifier="AddNota" id="TxI-w4-Y5G"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -111,17 +112,28 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Adicionar Nota..." id="IYF-89-iRW">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel." id="Tg8-4A-ozT"/>
-                        <barButtonItem key="rightBarButtonItem" title="Salvar" id="12T-Ly-n4w"/>
+                        <barButtonItem key="leftBarButtonItem" title="Cancel." id="Tg8-4A-ozT">
+                            <connections>
+                                <action selector="cancel:" destination="BYZ-38-t0r" id="ynJ-W0-fc4"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Salvar" id="12T-Ly-n4w">
+                            <connections>
+                                <action selector="salvar:" destination="BYZ-38-t0r" id="sP0-ec-Z6Y"/>
+                                <segue destination="PIa-ua-OjR" kind="unwind" unwindAction="unwindForNotesList:" id="DCy-Mj-pQ9"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="btSalvar" destination="12T-Ly-n4w" id="Vme-Wo-RNr"/>
                         <outlet property="tfTitulo" destination="XfO-hQ-6Gy" id="BY7-Nd-AJn"/>
                         <outlet property="tvConteudo" destination="yvc-pC-JYw" id="FsX-39-oj4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <exit id="PIa-ua-OjR" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2204" y="37"/>
+            <point key="canvasLocation" x="1739" y="26"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kRk-cq-EEe">
@@ -159,7 +171,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nF3-Fy-gAD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1392" y="37"/>
+            <point key="canvasLocation" x="1439" y="474"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Ttq-9e-88U"/>
+    </inferredMetricsTieBreakers>
 </document>

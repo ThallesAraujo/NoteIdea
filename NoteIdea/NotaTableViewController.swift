@@ -12,7 +12,7 @@ class NotaTableViewController: UITableViewController {
     
     
     var notas = [Nota]()
-
+    
     //carregamento de dados placebo para a demonstração da view
     private func getPlacebo(){
         
@@ -35,6 +35,7 @@ class NotaTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.leftBarButtonItem = editButtonItem()
         getPlacebo()
     }
 
@@ -42,7 +43,6 @@ class NotaTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
      
     }
-
    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         
@@ -72,6 +72,59 @@ class NotaTableViewController: UITableViewController {
         return cell
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        switch(segue.identifier){
+        case "AddNota"?:
+            print("adicionando uma nota...")
+            //para editar itens já existentes:
+        case "EditarNota"?:
+            
+            //1 - recuperar o ViewController da célula (classe VIEWCONTROLLER, não confundir com TABLEVIEWCONTROLLER!!!)
+            guard let notaEditViewController = segue.destinationViewController as? ViewController else{
+                fatalError("Não foi possível resgatar o ViewController dessa nota!; \(segue.destinationViewController)")
+            }
+            
+            //2 - Recuperar a célula
+            guard let notaCelulaSelecionada = sender as? NotaTableViewCell else{
+                fatalError("Não foi possível resgatar a célula a qual esta nota pertence; \(sender)")
+            }
+            
+            //3 - recuperar o índice do item
+            guard let indiceCelula = tableView.indexPathForCell(notaCelulaSelecionada) else{
+                fatalError("Índice não encontrado; \(notaCelulaSelecionada)")
+            }
+            
+            let notaSelecionada = notas[indiceCelula.row]
+            
+            notaEditViewController.nota = notaSelecionada
+            
+            
+        default:
+              fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+        }
+        
+    }
+    
+    @IBAction func unwindForNotesList(sender : UIStoryboardSegue){
+        
+        if let sourceViewController = sender.sourceViewController as? ViewController,
+            nota = sourceViewController.nota{
+                
+                if let selectedIndexPath = tableView.indexPathForSelectedRow{
+                    notas[selectedIndexPath.row] = nota
+                    tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: UITableViewRowAnimation.None)
+                }else{
+                
+                let newIndexPath = NSIndexPath(forRow: notas.count, inSection: 0)
+                notas.append(nota)
+                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                }
+        }
+        
+    }
+
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -81,17 +134,17 @@ class NotaTableViewController: UITableViewController {
     }
     */
 
-    /*
-    // Override to support editing the table view.
+    
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
+            notas.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.
